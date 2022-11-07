@@ -62,11 +62,11 @@ public class Magpie2
         else if (statement.indexOf("Ms.") >= 0){
             response = "She sounds like a good teacher.";
         }
-        else if (statement.length() == 0){
+        else if (statement.trim().length() == 0){
             response = "Say something, please.";
         }
         else if(statement.indexOf("cat") >= 0 || statement.indexOf("dog") >= 0){
-            response = "Tell me more about your pets."
+            response = "Tell me more about your pets.";
         }
         else
         {

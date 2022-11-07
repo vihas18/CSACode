@@ -32,7 +32,7 @@ public class Magpie3
 	public String getResponse(String statement)
 	{
 		String response = "";
-		if (statement.length() == 0)
+		if (statement.trim().length() == 0)
 		{
 			response = "Say something, please.";
 		}
@@ -47,11 +47,28 @@ public class Magpie3
 		{
 			response = "Tell me more about your family.";
 		}
-		else if (findKeyword(statement, "weekend") >= 0){
+		else if (findKeyword(statement, "weekend") >= 0 || findKeyword(statement, "weekends") >= 0){
 			response = "Did you do anything fun this weekend?";
 		}
-		else if (findKeyword(statement, "game") >= 0){
+		else if (findKeyword(statement, "game") >= 0 || findKeyword(statement, "games") >= 0){
 			response = "What are you favorite games to play?";
+		}else if (findKeyword(statement,"Mr.") >= 0){
+			response = "He sounds like a good teacher.";
+		}
+		else if (findKeyword(statement,"Mrs.") >= 0){
+			response = "She sounds like a good teacher.";
+		}
+		else if (findKeyword(statement,"Ms.") >= 0){
+			response = "She sounds like a good teacher.";
+		}
+		else if (statement.trim().length() == 0){
+			response = "Say something, please.";
+		}
+		else if(findKeyword(statement,"cat") >= 0 || findKeyword(statement,"dog") >= 0){
+			response = "Tell me more about your pets.";
+		}
+		else if (findKeyword(statement, "school") >= 0){
+			response = "Do you like school?";
 		}
 		else
 		{
