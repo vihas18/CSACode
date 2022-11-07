@@ -30,7 +30,7 @@ public class Magpie4 {
      */
     public String getResponse(String statement)	{
         String response = "";
-        //
+
         // Look for a two word (you <something> me) pattern
         int youPos = findKeyword(statement, "you", 0);
         int iPos = findKeyword(statement, "I", 0);
