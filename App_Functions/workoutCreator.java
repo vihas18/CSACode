@@ -81,7 +81,13 @@ class workoutCreator {
     }
     public static String[] sortSize(String[] s){
         String[] output = new String[s.length];
+        Arrays.sort(output, new Comparator<String>(){
 
+            public int compare(String o1, String o2)
+            {
+                return ("" + count(output,o2)).compareTo(("" + count(output,o1)));
+            }
+        });
         return output;
     }
 
