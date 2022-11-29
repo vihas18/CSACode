@@ -7,6 +7,9 @@ package Caveman;
  * @version 0.1
  */
 public class Cavemen {
+    private int howStinky, vocab;
+    private boolean canBuildFire, hasCave, hasMate, facialHair;
+    private String name;
     public static void print(Object o){
         System.out.println(o);
     }

@@ -37,6 +37,7 @@ class workoutCreator {
                 currentPos++;
             }
         }
+
         exerciseTypes = sortFreq(exerciseTypes);
 
         return "done";
