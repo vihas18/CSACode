@@ -1,4 +1,4 @@
-package Unit_4.App_Functions;
+package App_Functions;
 
 import java.util.*;
 
@@ -15,8 +15,9 @@ class workoutCreator {
     };
     public static String[] muscleNames = {"muscle0","muscle1","muscle2","muscle3","muscle4","muscle5","muscle6"};
     public static String[] sizes = {"small","big","small","small","big","small","small","big","small"};
+    public static int[] muscles = {0,1,2};
     public static void main(String[] args) {
-        int[] muscles = {0,1,2};
+
         String[] targets = {"strength","endurance","strength"};
         System.out.println(createWorkout(muscles, targets));
     }
@@ -72,11 +73,17 @@ class workoutCreator {
 
             public int compare(String o1, String o2)
             {
-                return ("" + count(output,o1)).compareTo(("" + count(output,o2)));
+                return ("" + count(output,o2)).compareTo(("" + count(output,o1)));
             }
         });
         return output;
     }
+    public static String[] sortSize(String[] s){
+        String[] output = new String[s.length];
+
+        return output;
+    }
+
     public static int countDistinct(String arr[]) {
         int n = arr.length;
         HashSet<String> hs = new HashSet<String>();
