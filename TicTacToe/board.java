@@ -18,15 +18,32 @@ public class board implements ActionListener {
     JButton p02;
     JButton p12;
     JButton p22;
+    JButton botToggle;
     String[][] board;
-    List<Integer[]> possibleMoves = Arrays.asList(new Integer[]{0,0},new Integer[]{1,0},new Integer[]{2,0},new Integer[]{2,1},new Integer[]{1,1},new Integer[]{0,1},new Integer[]{0,2},new Integer[]{1,2},new Integer[]{2,2});
+    ArrayList<Integer[]> possibleMoves;
     JFrame frame;
     JButton[][] boardButton = {{p00, p01, p02},{p10, p11,p12},{p20,p21,p22}};
     GridBagConstraints c;
     String player;
     JLabel output;
     int moves;
+    boolean bot;
     public board(){
+
+        possibleMoves = new ArrayList<Integer[]>() {
+            {
+                add(new Integer[]{0,0});
+                add(new Integer[]{1,0});
+                add(new Integer[]{2,0});
+                add(new Integer[]{2,1});
+                add(new Integer[]{2,2});
+                add(new Integer[]{1,1});
+                add(new Integer[]{1,2});
+                add(new Integer[]{0,2});
+                add(new Integer[]{0,1});
+            }
+        };
+
         player = "X";
         board = new String[][]{
                 {"-","-","-"},
@@ -47,6 +64,11 @@ public class board implements ActionListener {
         c.gridy = 3;
         c.gridwidth = 3;
         frame.add(output, c);
+
+        botToggle = new JButton("Human");
+        c.gridx = 0;
+        c.gridy = 4;
+        frame.add(botToggle, c);
 
         p00 = new JButton("-");
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -128,7 +150,7 @@ public class board implements ActionListener {
         p02.setFocusPainted(false);
         p12.setFocusPainted(false);
         p22.setFocusPainted(false);
-
+        botToggle.setFocusPainted(false);
 
         p00.addActionListener(this);
         p01.addActionListener(this);
@@ -139,6 +161,8 @@ public class board implements ActionListener {
         p20.addActionListener(this);
         p21.addActionListener(this);
         p22.addActionListener(this);
+        botToggle.addActionListener(this);
+
         boardButton = new JButton[][]{{p00, p01, p02},{p10, p11,p12},{p20,p21,p22}};
 
 
@@ -150,15 +174,33 @@ public class board implements ActionListener {
             }
         }
     }
+    public boolean equals(Integer[] first, Integer[] second){
+        for(int i = 0; i< first.length; i++){
+            if(!first[i].equals(second[i])){
+                return false;
+            }
+        }
+        return true;
+    }
     public void move(String player, Integer[] position, boolean show){
         board[position[0]][position[1]] = player;
         if(show) {
             boardButton[position[0]][position[1]].setText(player);
             boardButton[position[0]][position[1]].setEnabled(false);
             int index = 0;
-            for()
-            possibleMoves.remove(position);
+            for(int i = 0; i < possibleMoves.size(); i++) {
 
+                if(equals(possibleMoves.get(i), position)){
+                    possibleMoves.remove(i);
+                    break;
+                }
+            }
+//            for(String[] row: board){
+//                for(String value: row){
+//                    System.out.print(value);
+//                }
+//                System.out.println();
+//            }
             if (!victory().equals("")) {
                 output.setText(player + " wins!");
                 disableAllButtons();
@@ -170,13 +212,21 @@ public class board implements ActionListener {
                 moves += 1;
             }
         }
-        if(player == "O"){
-            bestMove();
-        }
     }
     public void actionPerformed(ActionEvent e) {
         int row = 0;
         int column = 0;
+        if(e.getSource().equals(botToggle)){
+            if(bot){
+                bot = false;
+                botToggle.setText("Human");
+            }
+            else{
+                bot = true;
+                botToggle.setText("Robot");
+            }
+            return;
+        }
         for(int i = 0; i< boardButton.length; i++){
             for(int j = 0; j < boardButton[0].length; j++){
                 if (e.getSource().equals(boardButton[i][j])){
@@ -191,16 +241,34 @@ public class board implements ActionListener {
     }
     public void bestMove(){
         int[] output = new int[2];
-        for(int row = 0; row < board.length; row++){
-            for(int col = 0; col < board[0].length; col++){
+        for(Integer[] value: possibleMoves){
+            int row = value[0];
+            int col = value[1];
                 move(player, new Integer[]{row,col}, false);
                 if(!victory().equals("")){
                     move(player, new Integer[]{row, col}, true);
+                    return;
                 }
                 else{
                     board[row][col] = "-";
                 }
             }
+        for(Integer[] value: possibleMoves){
+            int row = value[0];
+            int col = value[1];
+            player = "X";
+            move(player, new Integer[]{row,col}, false);
+            if(!victory().equals("")){
+                player = "O";
+                move(player, new Integer[]{row, col}, true);
+                return;
+
+            }
+            else{
+                board[row][col] = "-";
+            }
+            player = "O";
+
         }
         int index= (int) (Math.random() * possibleMoves.size());
         move(player, possibleMoves.get(index), true);
@@ -209,6 +277,9 @@ public class board implements ActionListener {
     public void nextPlayer(){
         if(player.equals("X")){
             player = "O";
+            if(bot) {
+                bestMove();
+            }
         }
         else{
             player = "X";
